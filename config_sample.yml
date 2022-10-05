@@ -1,0 +1,13 @@
+identifier: # Get from https://api.cityapp.lu/cityapp/api/configurations
+street: # Get from https://api.cityapp.lu/garbage/api/configurations/{identifier}/addresses
+waste_pickups_tpl: 'https://api.cityapp.lu/garbage/api/configurations/{identifier}/addresses/{street}/tours'
+descriptions_tpl: 'https://api.cityapp.lu/garbage/api/configurations/{identifier}/containers'
+translations:
+  déchets ménagers: Offall
+  déchets valorlux: Valorlux
+  déchets en verre: Glas
+  déchets organiques: Bio
+  déchets en papier: Pabeier
+  sapins: Dännebeemercher
+  vêtements: Kleeder
+  déchets toxiques: SuperDrecksKëscht
