@@ -62,5 +62,5 @@ for pickup in pickups:
       ))
 
 
-with open('feed.ics', 'w') as file:
+with open(config['feed_path'], 'w') as file:
   file.writelines(calendar)
