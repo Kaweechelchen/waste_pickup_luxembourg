@@ -28,6 +28,10 @@ with open('config.yml', 'r') as config_data:
   config = yaml.load(config_data,
                      Loader=yaml.SafeLoader)
 
+# Exception handler to avoid creating events that nobody needs to see
+class EntryNotNeeded(BaseException):
+  pass
+
 
 class WastePickup(Event):
   """Waste Pickup Event."""
@@ -36,6 +40,8 @@ class WastePickup(Event):
     super().__init__()
     if type.lower() in config['translations']:
       self.name = config['translations'][type.lower()]
+      if not self.name:
+        raise EntryNotNeeded
     else:
       self.name = type
     self.begin = datetime.strptime(date, '%Y-%m-%d')
@@ -56,10 +62,14 @@ calendar = Calendar()
 for pickup in pickups:
   for list in ['garbages', 'onDemand']:
     for item in pickup[list]:
-      calendar.events.add(WastePickup(
-        pickup['date'],
-        descriptions[item]
-      ))
+      try:
+        calendar.events.add(WastePickup(
+          pickup['date'],
+          descriptions[item]
+        ))
+      except EntryNotNeeded:
+        logger.debug('Ignoring event of type %s', descriptions[item])
+        pass
 
 
 with open(config['feed_path'], 'w') as file:
